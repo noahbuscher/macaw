@@ -41,7 +41,7 @@ class Macaw {
 	 * Runs the callback for the given request
 	 */
 	public static function dispatch() {
-		$protocol = (isset($_SERVER['HTTPS']))? 'https': 'http://';
+		$protocol = (isset($_SERVER['HTTPS']))? 'https://': 'http://';
 		$uri = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 		$method = $_SERVER['REQUEST_METHOD'];
 
