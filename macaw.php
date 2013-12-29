@@ -79,11 +79,13 @@ class Macaw {
 
 		// run the error callback if the route was not found
 		if ($found_route == false) {
-			if (self::$error_callback) {
-				call_user_func(self::$error_callback);
-			} else {
-				echo '404';
+			if (!self::$error_callback) {
+				self::$error_callback = function() {
+					header($_SERVER['SERVER_PROTOCOL']." 404 Not Found");
+					echo '400';
+				};
 			}
+			call_user_func(self::$error_callback);
 		}
 	}
 }
