@@ -20,7 +20,7 @@ class Macaw {
 	 * Defines a route w/ callback and method
 	 */
 	public static function __callstatic($method, $params) {
-		$protocol = (isset($_SERVER['HTTPS']))? 'https': 'http://';
+		$protocol = (isset($_SERVER['HTTPS']))? 'https://': 'http://';
 		$base = $protocol . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
 		$uri = $base . $params[0];
 		$callback = $params[1];
