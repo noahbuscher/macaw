@@ -12,7 +12,7 @@ class Macaw {
 	    ':any' => '[^/]+',
 	    ':num' => '[0-9]+',
 	    ':all' => '.*'
-    );
+    	);
 
 	/**
 	 * Defines a route w/ callback and method
@@ -35,11 +35,11 @@ class Macaw {
 		$method = $_SERVER['REQUEST_METHOD'];
 
 		$searches = array_keys(static::$patterns);
-        $replaces = array_values(static::$patterns);
+        	$replaces = array_values(static::$patterns);
 
-        $found_route = false;
+        	$found_route = false;
 
-        // check if route is defined without regex
+        	// check if route is defined without regex
 		if (in_array($uri, self::$routes)) {
 			$route_pos = array_keys(self::$routes, $uri);
 			foreach ($route_pos as $route) {
@@ -53,8 +53,8 @@ class Macaw {
 			$pos = 0;
 			foreach (self::$routes as $route) {
 				if (strpos($route, ':') !== false) {
-                    $route = str_replace($searches, $replaces, $route);
-                }
+                    			$route = str_replace($searches, $replaces, $route);
+                		}
 
 				if (preg_match('#^' . $route . '$#', $uri, $matched)) {
 					if (self::$methods[$pos] == $method) {
