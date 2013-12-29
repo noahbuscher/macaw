@@ -51,21 +51,4 @@ If you don't specify an error callback, Macaw will just echo `404`.
 
 <hr>
 
-In order to let the server know the URI does not point to a real file, you need to create a [.htaccess](http://httpd.apache.org/docs/2.2/howto/htaccess.html) file. Put it in the parent folder of your project.
-
-```
-Options -indexes
-
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-
-    RewriteRule ^(.*)$ index.php?/$1 [L]
-</IfModule>
-
-<IfModule !mod_rewrite.c>
-    ErrorDocument 404 index.php
-</IfModule>
-```
+In order to let the server know the URI does not point to a real file, you need to use the included [.htaccess](http://httpd.apache.org/docs/2.2/howto/htaccess.html) file.
