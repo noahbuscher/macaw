@@ -32,14 +32,14 @@ class Macaw {
 	/**
 	 * Defines callback if route is not found
 	 */
-	public function error($callback) {
+	public static function error($callback) {
 		self::$error_callback = $callback;
 	}
 
 	/**
 	 * Runs the callback for the given request
 	 */
-	public function dispatch() {
+	public static function dispatch() {
 		$uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 		$method = $_SERVER['REQUEST_METHOD'];
 
