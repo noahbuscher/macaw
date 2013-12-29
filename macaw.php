@@ -9,10 +9,10 @@ class Macaw {
 	public static $callbacks = array();
 
 	public static $patterns = array(
-	        ':any' => '[^/]+',
-	        ':num' => '[0-9]+',
-	        ':all' => '.*'
-    	);
+	    ':any' => '[^/]+',
+	    ':num' => '[0-9]+',
+	    ':all' => '.*'
+    );
 
 	/**
 	 * Defines a route w/ callback and method
