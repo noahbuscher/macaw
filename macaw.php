@@ -1,7 +1,6 @@
 <?php
 
-class Macaw
-{
+class Macaw {
 
     public static $routes = array();
 
@@ -17,23 +16,10 @@ class Macaw
 
     public static $error_callback;
 
-
-	/**
-	 * Defines a route w/ callback and method
-	 */
-	public static function __callstatic($method, $params)
-	{
-		$protocol = (isset($_SERVER['HTTPS']))? 'https://': 'http://';
-		$base = $protocol . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
-		$uri = $base . $params[0];
-		$callback = $params[1];
-	}
-
     /**
      * Defines a route w/ callback and method
      */
-    public static function __callstatic($method, $params)
-    {
+    public static function __callstatic($method, $params) {
         $protocol = (isset($_SERVER['HTTPS']))? 'https://': 'http://';
         $base = $protocol . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
         $uri = $base . $params[0];
@@ -44,36 +30,17 @@ class Macaw
         array_push(self::$callbacks, $callback);
     }
 
-	/**
-	 * Defines callback if route is not found
-	 */
-	public static function error($callback)
-	{
-		self::$error_callback = $callback;
-	}
-
-	/**
-	 * Runs the callback for the given request
-	 */
-	public static function dispatch()
-	{
-		$protocol = (isset($_SERVER['HTTPS']))? 'https://': 'http://';
-		$uri = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-		$method = $_SERVER['REQUEST_METHOD'];
-	}
-
     /**
      * Defines callback if route is not found
-     */
+    */
     public static function error($callback) {
         self::$error_callback = $callback;
     }
 
     /**
-    * Runs the callback for the given request
-    */
-    public static function dispatch()
-    {
+     * Runs the callback for the given request
+     */
+    public static function dispatch() {
         $protocol = (isset($_SERVER['HTTPS']))? 'https://': 'http://';
         $uri = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
@@ -106,19 +73,19 @@ class Macaw
                         call_user_func_array(self::$callbacks[$pos], array($matched[1]));
                     }
                 }
-                $pos++;
+            $pos++;
             }
         }
 
-		// run the error callback if the route was not found
-		if ($found_route == false) {
-			if (!self::$error_callback) {
-				self::$error_callback = function() {
-					header($_SERVER['SERVER_PROTOCOL']." 404 Not Found");
-					echo '404';
-				};
-			}
-			call_user_func(self::$error_callback);
-		}
-	}
+        // run the error callback if the route was not found
+        if ($found_route == false) {
+            if (!self::$error_callback) {
+                self::$error_callback = function() {
+                    header($_SERVER['SERVER_PROTOCOL']." 404 Not Found");
+                    echo '404';
+                };
+            }
+            call_user_func(self::$error_callback);
+        }
+    }
 }
