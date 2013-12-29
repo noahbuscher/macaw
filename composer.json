@@ -3,5 +3,5 @@
     "description": "Sexy PHP Router.",
     "require": {
         "php": ">=5.3.3"
-    },
+    }
 }
