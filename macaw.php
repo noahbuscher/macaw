@@ -12,7 +12,9 @@ class Macaw {
 	    ':any' => '[^/]+',
 	    ':num' => '[0-9]+',
 	    ':all' => '.*'
-    	);
+    );
+
+    public static $error_callback;
 
 	/**
 	 * Defines a route w/ callback and method
@@ -25,6 +27,13 @@ class Macaw {
 		array_push(self::$routes, $uri);
 		array_push(self::$methods, strtoupper($method));
 		array_push(self::$callbacks, $callback);
+	}
+
+	/**
+	 * Defines callback if route is not found
+	 */
+	public function error($callback) {
+		self::$error_callback = $callback;
 	}
 
 	/**
@@ -66,9 +75,13 @@ class Macaw {
 			}
 		}
 
-		// return a 404 if the page was not found
+		// run the error callback if the route was not found
 		if ($found_route == false) {
-			echo '404 :: Page not found';
+			if (self::$error_callback) {
+				call_user_func(self::$error_callback);
+			} else {
+				echo '404';
+			}
 		}
 	}
 }
