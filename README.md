@@ -39,7 +39,19 @@ Macaw::post('/', function() {
 Macaw::dispatch();
 ```
 
-Because Macaw is routing to locations that are not real files, you need to let the server know to not return a `404`. This can be done with a simple file called a `.htaccess` file. Just create a new file on your server path that uses Macaw called `.htaccess` and put this in it:
+Lastly, if there is no route defined for a certian location, you can make Macaw run a custom callback, like:
+
+```PHP
+Macaw::error(function() {
+  echo '404 :: Not Found';
+});
+```
+
+If you don't specify an error callback, Macaw will just echo `404`.
+
+<hr>
+
+In order to let the server know the URI does not point to a real file, you need to create a [.htaccess](http://httpd.apache.org/docs/2.2/howto/htaccess.html) file. Put it in the parent folder of your project.
 
 ```
 Options -indexes
