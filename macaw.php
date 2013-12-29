@@ -82,7 +82,7 @@ class Macaw {
 			if (!self::$error_callback) {
 				self::$error_callback = function() {
 					header($_SERVER['SERVER_PROTOCOL']." 404 Not Found");
-					echo '400';
+					echo '404';
 				};
 			}
 			call_user_func(self::$error_callback);
