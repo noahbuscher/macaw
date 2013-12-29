@@ -39,7 +39,7 @@ Macaw::post('/', function() {
 Macaw::dispatch();
 ```
 
-Lastly, if there is no route defined for a certian location, you can make Macaw run a custom callback, like:
+Lastly, if there is no route defined for a certain location, you can make Macaw run a custom callback, like:
 
 ```PHP
 Macaw::error(function() {
