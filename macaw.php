@@ -1,6 +1,7 @@
 <?php
 
-class Macaw {
+class Macaw
+{
 
     public static $routes = array();
 
@@ -19,7 +20,8 @@ class Macaw {
     /**
      * Defines a route w/ callback and method
      */
-    public static function __callstatic($method, $params) {
+    public static function __callstatic($method, $params)
+    {
         $protocol = (isset($_SERVER['HTTPS']))? 'https://': 'http://';
         $base = $protocol . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
         $uri = $base . $params[0];
@@ -33,14 +35,16 @@ class Macaw {
     /**
      * Defines callback if route is not found
     */
-    public static function error($callback) {
+    public static function error($callback)
+    {
         self::$error_callback = $callback;
     }
 
     /**
      * Runs the callback for the given request
      */
-    public static function dispatch() {
+    public static function dispatch()
+    {
         $protocol = (isset($_SERVER['HTTPS']))? 'https://': 'http://';
         $uri = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
