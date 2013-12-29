@@ -47,6 +47,8 @@ class Macaw
     {
         $protocol = (isset($_SERVER['HTTPS']))? 'https://': 'http://';
         $uri = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $uri_explode = explode('?', $uri);
+        $uri = $uri_explode[0];
         $method = $_SERVER['REQUEST_METHOD'];
 
         $searches = array_keys(static::$patterns);
