@@ -24,3 +24,17 @@ Macaw::get('/(:any)', function($slug) {
 
 Macaw::dispatch();
 ```
+
+You can also make requests for HTTP methods in Macaw, so you could also do:
+
+```PHP
+Macaw::get('/', function() {
+  echo 'I <3 GET commands!';
+});
+
+Macaw::post('/', function() {
+  echo 'I <3 POST commands!';
+});
+
+Macaw::dispatch();
+```
