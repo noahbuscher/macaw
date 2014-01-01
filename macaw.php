@@ -22,9 +22,7 @@ class Macaw
      */
     public static function __callstatic($method, $params)
     {
-        $protocol = (isset($_SERVER['HTTPS']))? 'https://': 'http://';
-        $base = $protocol . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
-        $uri = $base . $params[0];
+        $uri = dirname($_SERVER['PHP_SELF']).$params[0];
         $callback = $params[1];
 
         array_push(self::$routes, $uri);
@@ -45,10 +43,7 @@ class Macaw
      */
     public static function dispatch()
     {
-        $protocol = (isset($_SERVER['HTTPS']))? 'https://': 'http://';
-        $uri = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-        $uri_explode = explode('?', $uri);
-        $uri = $uri_explode[0];
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $method = $_SERVER['REQUEST_METHOD'];
 
         $searches = array_keys(static::$patterns);
