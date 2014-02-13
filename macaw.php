@@ -71,7 +71,7 @@ class Macaw
                 if (preg_match('#^' . $route . '$#', $uri, $matched)) {
                     if (self::$methods[$pos] == $method) {
                         $found_route = true;
-                        call_user_func_array(self::$callbacks[$pos], array($matched[1]));
+                        call_user_func_array(self::$callbacks[$pos], $matched);
                     }
                 }
             $pos++;
