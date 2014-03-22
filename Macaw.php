@@ -44,7 +44,6 @@ class Macaw
     public static function dispatch()
     {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $uri = rtrim($uri,'/'); //remove trailing slashes
         $method = $_SERVER['REQUEST_METHOD'];
 
         $searches = array_keys(static::$patterns);
