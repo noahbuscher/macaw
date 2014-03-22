@@ -44,6 +44,7 @@ class Macaw
     public static function dispatch()
     {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri = rtrim($uri,'/'); //remove trailing slashes
         $method = $_SERVER['REQUEST_METHOD'];
 
         $searches = array_keys(static::$patterns);
@@ -71,6 +72,7 @@ class Macaw
                 if (preg_match('#^' . $route . '$#', $uri, $matched)) {
                     if (self::$methods[$pos] == $method) {
                         $found_route = true;
+                        array_shift($matched); //remove $matched[0] as [1] is the first parameter.
                         call_user_func_array(self::$callbacks[$pos], $matched);
                     }
                 }
