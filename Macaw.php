@@ -1,6 +1,6 @@
 <?php
 
-class Router
+class Macaw
 {
 
     public static $routes = array();
