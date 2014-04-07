@@ -1,7 +1,7 @@
 Macaw
 =====
 
-Macaw is a simple PHP router. It's super small (~90 LOC), fast, and sexy.
+Macaw is a simple PHP router. It's super small (~150 LOC), fast, and sexy.
 
 ### Install
 
