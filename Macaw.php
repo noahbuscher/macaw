@@ -1,9 +1,5 @@
 <?php
 
-/*
-Router class from https://github.com/Codingbean/Macaw
- */
-
 class Router
 {
 
