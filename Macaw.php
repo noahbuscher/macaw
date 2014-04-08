@@ -100,16 +100,16 @@ class Macaw
                         array_shift($matched); //remove $matched[0] as [1] is the first parameter.
 
 
-                        if(!is_object(self::$callbacks[$route])){
+                        if(!is_object(self::$callbacks[$pos])){
 
                             //grab all parts based on a / separator 
-                            $parts = explode('/',self::$callbacks[$route]); 
+                            $parts = explode('/',self::$callbacks[$pos]); 
 
                             //collect the last index of the array
                             $last = end($parts);
 
                             //grab the controller name and method call
-                            $segments = explode('@',$last);  
+                            $segments = explode('@',$last); 
 
                             //instanitate controller
                             $controller = new $segments[0]();
