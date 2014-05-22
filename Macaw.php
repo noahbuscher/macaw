@@ -1,5 +1,7 @@
 <?php
 
+namespace Codingbean\Macaw;
+
 class Macaw
 {
 
