@@ -5,6 +5,8 @@ namespace Codingbean\Macaw;
 class Macaw
 {
 
+    public static $halts = false;
+
     public static $routes = array();
 
     public static $methods = array();
@@ -39,6 +41,11 @@ class Macaw
     public static function error($callback)
     {
         self::$error_callback = $callback;
+    }
+    
+    public static function haltOnMatch($flag = true)
+    {
+        self::$halts = $flag;
     }
 
     /**
@@ -80,9 +87,13 @@ class Macaw
                         //call method
                         $controller->$segments[1](); 
                         
+                        if (self::$halts) return;
+                        
                     } else {
                         //call closure
                         call_user_func(self::$callbacks[$route]);
+                        
+                        if (self::$halts) return;
                     }
                 }
             }
@@ -118,10 +129,12 @@ class Macaw
 
                             //call method and pass any extra parameters to the method
                             $controller->$segments[1](implode(",", $matched)); 
-                            
+    
+                            if (self::$halts) return;
                         } else {
-                            
                             call_user_func_array(self::$callbacks[$pos], $matched);
+                            
+                            if (self::$halts) return;
                         }
                         
                     }
