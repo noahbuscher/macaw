@@ -19,7 +19,7 @@ If you have Composer, just include Macaw as a project dependency in your `compos
 First, `use` the Macaw namespace:
 
 ```PHP
-use \CodingBean\Macaw\Macaw;
+use \Codingbean\Macaw\Macaw;
 ```
 
 Macaw is not an object, so you can just make direct operations to the class. Here's the Hello World:
