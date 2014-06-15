@@ -1,6 +1,6 @@
 <?php
 
-namespace Codingbean\Macaw;
+namespace NoahBuscher\Macaw;
 
 class Macaw
 {
