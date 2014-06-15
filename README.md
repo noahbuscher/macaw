@@ -8,9 +8,9 @@ Macaw is a simple PHP router. It's super small (~150 LOC), fast, and sexy.
 If you have Composer, just include Macaw as a project dependency in your `composer.json`. If you don't just install it by downloading the .ZIP file and extracting it to your project directory.
 
 ```
-    require: {
-        "codingbean/macaw": "dev-master"
-    }
+require: {
+    "noahbuscher/macaw": "dev-master"
+}
 
 ```
 
@@ -19,7 +19,7 @@ If you have Composer, just include Macaw as a project dependency in your `compos
 First, `use` the Macaw namespace:
 
 ```PHP
-use \Codingbean\Macaw\Macaw;
+use \NoahBuscher\Macaw\Macaw;
 ```
 
 Macaw is not an object, so you can just make direct operations to the class. Here's the Hello World:
