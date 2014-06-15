@@ -1,5 +1,5 @@
 {
-	"name": "codingbean/macaw",
+	"name": "noahbuscher/macaw",
 	"description": "Sexy PHP router.",
 	"license": "MIT",
 	"require": {
@@ -7,6 +7,6 @@
 	},
 	
 	"autoload": {
-		"psr-4": {"Codingbean\\Macaw\\": ""}
+		"psr-4": {"NoahBuscher\\Macaw\\": ""}
 	}
 }
