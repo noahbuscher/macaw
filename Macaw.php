@@ -2,6 +2,14 @@
 
 namespace NoahBuscher\Macaw;
 
+/**
+ * @method static Macaw get(string $route, Callable $callback)
+ * @method static Macaw post(string $route, Callable $callback)
+ * @method static Macaw put(string $route, Callable $callback)
+ * @method static Macaw delete(string $route, Callable $callback)
+ * @method static Macaw options(string $route, Callable $callback)
+ * @method static Macaw head(string $route, Callable $callback)
+ */
 class Macaw
 {
 
