@@ -11,7 +11,6 @@ If you have Composer, just include Macaw as a project dependency in your `compos
 require: {
     "noahbuscher/macaw": "dev-master"
 }
-
 ```
 
 ### Examples
