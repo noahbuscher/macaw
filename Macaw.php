@@ -135,8 +135,15 @@ class Macaw
                             //instanitate controller
                             $controller = new $segments[0]();
 
+                            //fix multi parameters 
+                            if(!method_exists($controller, $segments[1])){
+                                echo "controller and action not found";
+                            }else{
+                               call_user_func_array(array($controller, $segments[1]), $matched);
+                            }
+
                             //call method and pass any extra parameters to the method
-                            $controller->$segments[1](implode(",", $matched)); 
+                            // $controller->$segments[1](implode(",", $matched)); 
     
                             if (self::$halts) return;
                         } else {
