@@ -76,7 +76,8 @@ class Macaw
             $route_pos = array_keys(self::$routes, $uri);
             foreach ($route_pos as $route) {
 
-                if (self::$methods[$route] == $method) {
+                //using an ANY option to match both GET and POST requests
+                if (self::$methods[$route] == $method || self::$methods[$route] == 'ANY') {
                     $found_route = true;
 
                     //if route is not an object 
