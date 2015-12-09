@@ -1,7 +1,7 @@
 Macaw
 =====
 
-Macaw is a simple, open source PHP router. It's super small (~150 LOC), fast, and sexy. This class allows you to jus throw it into your project and start using it immediately.
+Macaw is a simple, open source PHP router. It's super small (~150 LOC), fast, and has some great annotated source code. This class allows you to just throw it into your project and start using it immediately.
 
 ### Install
 
@@ -67,4 +67,4 @@ If you don't specify an error callback, Macaw will just echo `404`.
 
 <hr>
 
-In order to let the server know the URI does not point to a real file, you need to use the included [.htaccess](http://httpd.apache.org/docs/2.2/howto/htaccess.html) file.
+In order to let the server know the URI does not point to a real file, you may need to use one of the example [configuration files](https://github.com/noahbuscher/Macaw/blob/master/config).
