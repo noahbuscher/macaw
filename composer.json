@@ -1,6 +1,6 @@
 {
 	"name": "noahbuscher/macaw",
-	"description": "Sexy PHP router.",
+	"description": "Simple PHP router class.",
 	"license": "MIT",
 	"require": {
 		"php": ">=5.3.3"
