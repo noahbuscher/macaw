@@ -83,7 +83,7 @@ class Macaw {
             $controller = new $segments[0]();
 
             // Call method
-            $controller->$segments[1]();
+            $controller->{$segments[1]}();
 
             if (self::$halts) return;
           } else {
