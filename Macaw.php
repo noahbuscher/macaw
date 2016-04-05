@@ -26,7 +26,7 @@ class Macaw {
    * Defines a route w/ callback and method
    */
   public static function __callstatic($method, $params) {
-    $uri = dirname($_SERVER['PHP_SELF']).$params[0];
+    $uri = dirname($_SERVER['PHP_SELF']).'/'.$params[0];
     $callback = $params[1];
 
     array_push(self::$routes, $uri);
@@ -149,6 +149,13 @@ class Macaw {
           header($_SERVER['SERVER_PROTOCOL']." 404 Not Found");
           echo '404';
         };
+      } else {
+        if (is_string(self::$error_callback)) {
+          self::get($_SERVER['REQUEST_URI'], self::$error_callback);
+          self::$error_callback = null;
+          self::dispatch();
+          return ;
+        }
       }
       call_user_func(self::$error_callback);
     }
