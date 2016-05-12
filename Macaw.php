@@ -22,11 +22,38 @@ class Macaw {
   );
   public static $error_callback;
 
+  public static function getPathInfo() {
+    if (isset($_SERVER['PATH_INFO'])) {
+      $path_info = $_SERVER['PATH_INFO'];
+    } else {
+      // extract PATH_INFO from $_SERVER['REQUEST_URI']
+      $path_info= $_SERVER['REQUEST_URI'];
+
+      // remove SCRIPT_NAME from leading of $_SERVER['REQUEST_URI']
+      $len = strlen($_SERVER['SCRIPT_NAME']);
+      if (substr($path_info, 0, $len) == $_SERVER['SCRIPT_NAME']) {
+        $path_info= substr($path_info, $len);
+      }
+
+      // remove QUERY_STRING from tailing of $_SERVER['REQUEST_URI']
+      $len = strlen($_SERVER['QUERY_STRING']);
+      if (substr($path_info, -($len+1)) == "?{$_SERVER['QUERY_STRING']}") {
+        $path_info= substr($path_info, 0, strlen($path_info) - ($len+1));
+      }
+    }
+
+    return $path_info;
+  }
+
   /**
    * Defines a route w/ callback and method
    */
   public static function __callstatic($method, $params) {
-    $uri = dirname($_SERVER['PHP_SELF']).'/'.$params[0];
+    $webroot = dirname(self::getPathInfo());
+    if ($webroot == "/") {
+      $webroot = '';
+    }
+    $uri = $webroot.'/'.$params[0];
     $callback = $params[1];
 
     array_push(self::$routes, $uri);
@@ -49,7 +76,7 @@ class Macaw {
    * Runs the callback for the given request
    */
   public static function dispatch(){
-    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $uri = parse_url(self::getPathInfo(), PHP_URL_PATH);
     $method = $_SERVER['REQUEST_METHOD'];
 
     $searches = array_keys(static::$patterns);
