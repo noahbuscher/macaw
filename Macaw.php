@@ -57,7 +57,7 @@ class Macaw {
 
     $found_route = false;
 
-    self::$routes = str_replace('//', '/', self::$routes);
+    self::$routes = preg_replace('/\/+/', '/', self::$routes);
 
     // Check if route is defined without regex
     if (in_array($uri, self::$routes)) {
