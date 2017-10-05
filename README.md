@@ -70,7 +70,7 @@ If you don't specify an error callback, Macaw will just echo `404`.
 In order to let the server know the URI does not point to a real file, you may need to use one of the example [configuration files](https://github.com/noahbuscher/Macaw/blob/master/config).
 
 
-##Example passing to a controller instead of a closure
+## Example passing to a controller instead of a closure
 <hr>
 It's possible to pass the namespace path to a controller instead of the closure:
 
@@ -81,7 +81,7 @@ index.php:
 ```php
 require('vendor/autoload.php');
 
-use \NoahBuscher\Macaw\Macaw;
+use NoahBuscher\Macaw\Macaw;
 
 Macaw::get('/', 'Controllers\demo@index');
 Macaw::get('page', 'Controllers\demo@page');
