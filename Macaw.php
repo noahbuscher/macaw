@@ -25,7 +25,7 @@ class Macaw {
   /**
    * Defines a route w/ callback and method
    */
-  public static function __callstatic($method, $params) {
+  public static function __callStatic($method, $params) {
     $uri = dirname($_SERVER['PHP_SELF']).'/'.$params[0];
     $callback = $params[1];
 
