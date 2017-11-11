@@ -45,11 +45,15 @@ You can also make requests for HTTP methods in Macaw, so you could also do:
 
 ```PHP
 Macaw::get('/', function() {
-  echo 'I <3 GET commands!';
+  echo 'I'm a GET request!';
 });
 
 Macaw::post('/', function() {
-  echo 'I <3 POST commands!';
+  echo 'I'm a POST request!';
+});
+
+Macaw::any('/', function() {
+  echo 'I can be both a GET and a POST request!';
 });
 
 Macaw::dispatch();
