@@ -114,7 +114,7 @@ class Macaw {
         }
 
         if (preg_match('#^' . $route . '$#', $uri, $matched)) {
-          if (self::$methods[$pos] == $method || self::$methods[$pos] == 'ANY' || in_array($method, self::$maps[$pos])) {
+          if (self::$methods[$pos] == $method || self::$methods[$pos] == 'ANY' || (!empty(self::$maps[$pos]) && in_array($method, self::$maps[$pos]))) {
             $found_route = true;
 
             // Remove $matched[0] as [1] is the first parameter.
