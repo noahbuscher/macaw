@@ -98,7 +98,7 @@ demo.php:
 
 ```php
 <?php
-namespace controllers;
+namespace Controllers;
 
 class Demo {
 
