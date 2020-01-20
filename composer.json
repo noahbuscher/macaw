@@ -2,13 +2,27 @@
 	"name": "noahbuscher/macaw",
 	"description": "Simple PHP router class.",
 	"license": "MIT",
+	"homepage": "https://github.com/noahbuscher/Macaw",
+	"keywords": [
+		"router",
+		"php-router",
+		"php"
+	],
+	"authors": [
+		{
+			"name": "Noah Buscher",
+			"email": "me@noahbuscher.com",
+			"homepage": "http://noahbuscher.com/"
+		}
+	],
 	"require": {
 		"php": ">=7.2"
 	},
 	"require-dev": {
         "phpunit/phpunit": "^8"
     },
+	},
 	"autoload": {
-		"psr-4": {"NoahBuscher\\Macaw\\": ""}
+		"psr-4": { "NoahBuscher\\Macaw\\": "./" }
 	}
 }

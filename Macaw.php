@@ -15,20 +15,31 @@ class Macaw {
   public static $routes = array();
   public static $methods = array();
   public static $callbacks = array();
+  public static $maps = array();
   public static $patterns = array(
       ':any' => '[^/]+',
       ':num' => '[0-9]+',
       ':all' => '.*'
   );
   public static $error_callback;
+  public static $root;
 
   /**
    * Defines a route w/ callback and method
    */
   public static function __callstatic($method, $params) {
-    $uri = strpos($params[0], '/') === 0 ? $params[0] : '/' . $params[0];
-    $callback = $params[1];
 
+    if ($method == 'map') {
+        $maps = array_map('strtoupper', $params[0]);
+        $uri = strpos($params[1], '/') === 0 ? $params[1] : '/' . $params[1];
+        $callback = $params[2];
+    } else {
+        $maps = null;
+        $uri = strpos($params[0], '/') === 0 ? $params[0] : '/' . $params[0];
+        $callback = $params[1];
+    }
+
+    array_push(self::$maps, $maps);
     array_push(self::$routes, $uri);
     array_push(self::$methods, strtoupper($method));
     array_push(self::$callbacks, $callback);
@@ -49,7 +60,16 @@ class Macaw {
    * Runs the callback for the given request
    */
   public static function dispatch(){
-    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $uri = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+    if (!empty(self::$root) && self::$root !== '/') {
+      self::$root = rtrim(self::$root, '/');
+      if (self::$root === $uri) {
+        $uri = '/';
+      } else {
+        // Remove the root directory from uri, remove only the first occurrence
+        $uri = substr_replace($uri, '', strpos($uri, self::$root), strlen(self::$root));
+      }
+    }
     $method = $_SERVER['REQUEST_METHOD'];
 
     $searches = array_keys(static::$patterns);
@@ -63,8 +83,9 @@ class Macaw {
     if (in_array($uri, self::$routes)) {
       $route_pos = array_keys(self::$routes, $uri);
       foreach ($route_pos as $route) {
+
         // Using an ANY option to match both GET and POST requests
-        if (self::$methods[$route] == $method || self::$methods[$route] == 'ANY') {
+        if (self::$methods[$route] == $method || self::$methods[$route] == 'ANY' || (!empty(self::$maps[$route]) && in_array($method, self::$maps[$route]))) {
           $found_route = true;
 
           // If route is not an object
@@ -103,7 +124,7 @@ class Macaw {
         }
 
         if (preg_match('#^' . $route . '$#', $uri, $matched)) {
-          if (self::$methods[$pos] == $method || self::$methods[$pos] == 'ANY') {
+          if (self::$methods[$pos] == $method || self::$methods[$pos] == 'ANY' || (!empty(self::$maps[$pos]) && in_array($method, self::$maps[$pos]))) {
             $found_route = true;
 
             // Remove $matched[0] as [1] is the first parameter.

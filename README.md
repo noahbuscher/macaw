@@ -45,11 +45,15 @@ You can also make requests for HTTP methods in Macaw, so you could also do:
 
 ```PHP
 Macaw::get('/', function() {
-  echo 'I <3 GET commands!';
+  echo 'I'm a GET request!';
 });
 
 Macaw::post('/', function() {
-  echo 'I <3 POST commands!';
+  echo 'I'm a POST request!';
+});
+
+Macaw::any('/', function() {
+  echo 'I can be both a GET and a POST request!';
 });
 
 Macaw::dispatch();
@@ -70,7 +74,7 @@ If you don't specify an error callback, Macaw will just echo `404`.
 In order to let the server know the URI does not point to a real file, you may need to use one of the example [configuration files](https://github.com/noahbuscher/Macaw/blob/master/config).
 
 
-##Example passing to a controller instead of a closure
+## Example passing to a controller instead of a closure
 <hr>
 It's possible to pass the namespace path to a controller instead of the closure:
 
@@ -81,7 +85,7 @@ index.php:
 ```php
 require('vendor/autoload.php');
 
-use \NoahBuscher\Macaw\Macaw;
+use NoahBuscher\Macaw\Macaw;
 
 Macaw::get('/', 'Controllers\demo@index');
 Macaw::get('page', 'Controllers\demo@page');
@@ -94,7 +98,7 @@ demo.php:
 
 ```php
 <?php
-namespace controllers;
+namespace Controllers;
 
 class Demo {
 
