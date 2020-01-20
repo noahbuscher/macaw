@@ -22,6 +22,7 @@ class Macaw {
       ':all' => '.*'
   );
   public static $error_callback;
+  public static $root;
 
   /**
    * Defines a route w/ callback and method
@@ -59,7 +60,16 @@ class Macaw {
    * Runs the callback for the given request
    */
   public static function dispatch(){
-    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $uri = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+    if (!empty(self::$root) && self::$root !== '/') {
+      self::$root = rtrim(self::$root, '/');
+      if (self::$root === $uri) {
+        $uri = '/';
+      } else {
+        // Remove the root directory from uri, remove only the first occurrence
+        $uri = substr_replace($uri, '', strpos($uri, self::$root), strlen(self::$root));
+      }
+    }
     $method = $_SERVER['REQUEST_METHOD'];
 
     $searches = array_keys(static::$patterns);
