@@ -26,6 +26,8 @@ class Macaw {
   );
   public static $error_callback;
   public static $root;
+  // Multi level directory
+  public static $app = '/x/x';
 
   /**
    * Defines a route w/ callback and method
@@ -63,7 +65,9 @@ class Macaw {
    * Runs the callback for the given request
    */
   public static function dispatch(){
-    self::$uri = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+    $uri = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+    $repUri = implode('/', array_intersect(explode( '\\', self::$app), explode('/', $uri)));
+    self::$uri = preg_replace('/\/'. $repUri .'/', '', $uri);
     self::addRoot();
     $method = $_SERVER['REQUEST_METHOD'];
 
@@ -75,8 +79,8 @@ class Macaw {
     self::$routes = preg_replace('/\/+/', '/', self::$routes);
 
     // Check if route is defined without regex
-    if (in_array($uri, self::$routes)) {
-      $route_pos = array_keys(self::$routes, $uri);
+    if (in_array(self::$uri, self::$routes)) {
+      $route_pos = array_keys(self::$routes, self::$uri);
       foreach ($route_pos as $route) {
 
         // Using an ANY option to match both GET and POST requests
@@ -118,7 +122,7 @@ class Macaw {
           $route = str_replace($searches, $replaces, $route);
         }
 
-        if (preg_match('#^' . $route . '$#', $uri, $matched)) {
+        if (preg_match('#^' . $route . '$#', self::$uri, $matched)) {
           if (self::$methods[$pos] == $method || self::$methods[$pos] == 'ANY' || (!empty(self::$maps[$pos]) && in_array($method, self::$maps[$pos]))) {
             $found_route = true;
 
