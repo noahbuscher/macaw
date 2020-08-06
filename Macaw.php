@@ -9,8 +9,11 @@ namespace NoahBuscher\Macaw;
  * @method static Macaw delete(string $route, Callable $callback)
  * @method static Macaw options(string $route, Callable $callback)
  * @method static Macaw head(string $route, Callable $callback)
+ * @method static Macaw any(string $route, Callable $callback)
+ * @method static Macaw map(string $route, Callable $callback)
  */
 class Macaw {
+  public static $uri;
   public static $halts = false;
   public static $routes = array();
   public static $methods = array();
@@ -22,7 +25,9 @@ class Macaw {
       ':all' => '.*'
   );
   public static $error_callback;
-  public static $root;
+  public static $root = array();
+  // Multi level directory
+  public static $app = '/x/x';
 
   /**
    * Defines a route w/ callback and method
@@ -61,15 +66,9 @@ class Macaw {
    */
   public static function dispatch(){
     $uri = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
-    if (!empty(self::$root) && self::$root !== '/') {
-      self::$root = rtrim(self::$root, '/');
-      if (self::$root === $uri) {
-        $uri = '/';
-      } else {
-        // Remove the root directory from uri, remove only the first occurrence
-        $uri = substr_replace($uri, '', strpos($uri, self::$root), strlen(self::$root));
-      }
-    }
+    $repUri = implode('/', array_intersect(explode( '\\', self::$app), explode('/', $uri)));
+    self::$uri = preg_replace('/\/'. $repUri .'/', '', $uri);
+    self::addRoot();
     $method = $_SERVER['REQUEST_METHOD'];
 
     $searches = array_keys(static::$patterns);
@@ -80,8 +79,8 @@ class Macaw {
     self::$routes = preg_replace('/\/+/', '/', self::$routes);
 
     // Check if route is defined without regex
-    if (in_array($uri, self::$routes)) {
-      $route_pos = array_keys(self::$routes, $uri);
+    if (in_array(self::$uri, self::$routes)) {
+      $route_pos = array_keys(self::$routes, self::$uri);
       foreach ($route_pos as $route) {
 
         // Using an ANY option to match both GET and POST requests
@@ -123,7 +122,7 @@ class Macaw {
           $route = str_replace($searches, $replaces, $route);
         }
 
-        if (preg_match('#^' . $route . '$#', $uri, $matched)) {
+        if (preg_match('#^' . $route . '$#', self::$uri, $matched)) {
           if (self::$methods[$pos] == $method || self::$methods[$pos] == 'ANY' || (!empty(self::$maps[$pos]) && in_array($method, self::$maps[$pos]))) {
             $found_route = true;
 
@@ -181,4 +180,39 @@ class Macaw {
       call_user_func(self::$error_callback);
     }
   }
+  /**
+   * Set the directory of the group
+   */
+   public static function group($root, $member)
+   {
+        if (!empty($root)){
+            self::$root[$root] = $root;
+        }
+        if (!is_array($member))
+            self::$errorCallback = function() {
+                echo 'Arrays are best';
+            };
+    }
+  /**
+   * Add routing group
+   */
+    public static function addRoot()
+    {
+        foreach (self::$root as $root) {
+            if (!empty($root) && $root !== '/') {
+                $root = rtrim($root, '/');
+                if ($root === self::$uri) {
+                    self::$uri = '/';
+                } else {
+                    if (strpos(self::$uri, $root)) {
+                        // Delete the root directory and only delete the first directory
+                        self::$uri = substr_replace(self::$uri, '', strpos(self::$uri, $root), strlen($root) + 1);
+                        break;
+                    }
+                }
+            }
+        }
+        // Prevent next non routing loop
+        self::$root = null;
+    }
 }
