@@ -9,8 +9,11 @@ namespace NoahBuscher\Macaw;
  * @method static Macaw delete(string $route, Callable $callback)
  * @method static Macaw options(string $route, Callable $callback)
  * @method static Macaw head(string $route, Callable $callback)
+ * @method static Macaw any(string $route, Callable $callback)
+ * @method static Macaw map(string $route, Callable $callback)
  */
 class Macaw {
+  public static $uri;
   public static $halts = false;
   public static $routes = array();
   public static $methods = array();
@@ -60,16 +63,8 @@ class Macaw {
    * Runs the callback for the given request
    */
   public static function dispatch(){
-    $uri = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
-    if (!empty(self::$root) && self::$root !== '/') {
-      self::$root = rtrim(self::$root, '/');
-      if (self::$root === $uri) {
-        $uri = '/';
-      } else {
-        // Remove the root directory from uri, remove only the first occurrence
-        $uri = substr_replace($uri, '', strpos($uri, self::$root), strlen(self::$root));
-      }
-    }
+    self::$uri = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+    self::addRoot();
     $method = $_SERVER['REQUEST_METHOD'];
 
     $searches = array_keys(static::$patterns);
@@ -181,4 +176,35 @@ class Macaw {
       call_user_func(self::$error_callback);
     }
   }
+  /**
+   * Set the directory of the group
+   */
+   public static function group($root, $member)
+   {
+        if (!empty($root)){
+            self::$root = $root;
+        }
+        if (!is_array($member))
+            self::$errorCallback = function() {
+                echo 'Arrays are best';
+            };
+    }
+  /**
+   * Add routing group
+   */
+    public static function addRoot()
+    {
+        if (!empty(self::$root) && self::$root !== '/') {
+            self::$root = rtrim(self::$root, '/');
+            if (self::$root === self::$uri) {
+                self::$uri = '/';
+            } else {
+                if (strpos(self::$uri, self::$root))
+                   // Delete the root directory and only delete the first directory
+                    self::$uri = substr_replace(self::$uri, '', strpos(self::$uri, self::$root), strlen(self::$root) + 1);
+            }
+        }
+        // Prevent next non routing loop
+        self::$root = null;
+    }
 }
