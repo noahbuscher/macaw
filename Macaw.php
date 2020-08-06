@@ -25,7 +25,7 @@ class Macaw {
       ':all' => '.*'
   );
   public static $error_callback;
-  public static $root;
+  public static $root = array();
   // Multi level directory
   public static $app = '/x/x';
 
@@ -186,7 +186,7 @@ class Macaw {
    public static function group($root, $member)
    {
         if (!empty($root)){
-            self::$root = $root;
+            self::$root[$root] = $root;
         }
         if (!is_array($member))
             self::$errorCallback = function() {
@@ -198,14 +198,18 @@ class Macaw {
    */
     public static function addRoot()
     {
-        if (!empty(self::$root) && self::$root !== '/') {
-            self::$root = rtrim(self::$root, '/');
-            if (self::$root === self::$uri) {
-                self::$uri = '/';
-            } else {
-                if (strpos(self::$uri, self::$root))
-                   // Delete the root directory and only delete the first directory
-                    self::$uri = substr_replace(self::$uri, '', strpos(self::$uri, self::$root), strlen(self::$root) + 1);
+        foreach (self::$root as $root) {
+            if (!empty($root) && $root !== '/') {
+                $root = rtrim($root, '/');
+                if ($root === self::$uri) {
+                    self::$uri = '/';
+                } else {
+                    if (strpos(self::$uri, $root)) {
+                        // Delete the root directory and only delete the first directory
+                        self::$uri = substr_replace(self::$uri, '', strpos(self::$uri, $root), strlen($root) + 1);
+                        break;
+                    }
+                }
             }
         }
         // Prevent next non routing loop
